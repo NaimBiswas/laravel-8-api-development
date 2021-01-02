@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\returnValue;
+
 class PostController extends Controller
 {
     /**
@@ -14,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        return Post::all();
     }
 
     /**
@@ -22,10 +24,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +34,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+        return Post::create($request->all());
     }
 
     /**
@@ -46,7 +49,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $post = Post::find($post);
+        return $post;
     }
 
     /**
@@ -55,10 +59,7 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +70,9 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $post = Post::find($post);
+        $post->update($request->all());
+        return $post;
     }
 
     /**
@@ -80,6 +83,6 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        return Post::find($post)->destroy();
     }
 }
